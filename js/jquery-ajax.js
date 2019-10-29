@@ -71,7 +71,13 @@
   //
 
   // TODO: your code goes here :)
-
+  $('#generateDoggoBtn').click(function() {
+    $('#generateDoggoBtn').text('Generating Doggo...').attr('disabled', 'disabled');
+    $.get('https://dog.ceo/api/breeds/image/random', function(data) {
+      $('#doggoContainer').html(`<img src="${data.message}" >`);
+      $('#generateDoggoBtn').text('Generate Doggo').removeAttr('disabled');
+    });
+  })
   //
   // Cool. Now let's kick it up a notch and allow selecting a specific breed of dog!
   //
@@ -107,7 +113,21 @@
   //
 
   // TODO: your code goes here :)
+  $(document).ready(function() {
+    $.ajax('https://dog.ceo/api/breeds/list')
+      .done(function(data) {
+        $(data.message).each(function(index, breed) {
+          $('#selectBreedContainer select').append(`<option value="${breed}">${breed}</option>`);
+        })
+      })
 
+    $('#selectBreedContainer select').on('change', function() {
+      console.log(this.value);
+      $.get(`https://dog.ceo/api/breed/${this.value}/images/random`, function(data) {
+        $('#doggoContainer').html(`<img src="${data.message}" >`);
+      })
+    })
+  })
   //
   // Excellent work!
   //
